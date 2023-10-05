@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85165856c8656b9409754c3931b1d842, type: 3}
+  m_Name: GameplayData
+  m_EditorClassIdentifier: 
+  levels:
+  - number: 1
+    prefab: {fileID: 9134427009857340161, guid: 4c6c1a830cfa531429a446df6b1aa5dc, type: 3}
+    heroSize: 3
+  - number: 2
+    prefab: {fileID: 9134427009857340161, guid: 3d4504557fad13d499e4978b7752ac82, type: 3}
+    heroSize: 4
+  mainGameplayConfig:
+    distanceForWinPortalOpen: 10
+  obstacleConfig:
+    defaultStateMaterial: {fileID: 2100000, guid: 786726d3d140abb43890c51a269b9425, type: 2}
+    highlightedStateMaterial: {fileID: 2100000, guid: 2cff6e7ffc6247d4eabae258d671fa12, type: 2}
+  heroConfig:
+    firstJump:
+      distance: 2
+      height: 2
+      timeInSeconds: 0.7
+    secondJump:
+      distance: 4
+      height: 4
+      timeInSeconds: 0.9
+    winJump:
+      height: 7
+      timeInSeconds: 2
+    minimumHeroSize: 0.6
+    minDistanceFrontHeroAfterJump: 3.5
+  shotConfig:
+    flyAnimationTimeInSeconds: 0.6
+    minShotSize: 0.25
+    shotSizeIncrementPerSecond: 0.02
+    coefficientOfShotEffect: 3
