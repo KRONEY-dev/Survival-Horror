@@ -45,7 +45,7 @@ public class HomePage : BasePage
     {
         var maxSurvivalTime = GameClient.Instance.GetService<IDataManager>().CachedUserLocalData.maxSurvivalTime;
 
-        _currentMaxSurvivalTimeText.text = $"{maxSurvivalTime.TotalSeconds}S";
+        _currentMaxSurvivalTimeText.text = $"{maxSurvivalTime.TotalSeconds}s";
     }
 
     private SoundSettingsButton GetSoundSettingsButtonByType(SoundType type, string pathAtPanel, Transform soundSettingsPanel)

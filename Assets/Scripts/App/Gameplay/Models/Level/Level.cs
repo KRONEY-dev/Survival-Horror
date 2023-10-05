@@ -5,8 +5,6 @@ namespace Models.Level
 {
     public class Level
     {
-        public Camera LevelCamera { get; private set; }
-
         public Hero Hero { get; private set; }
 
         private GameObject _selfObject;
@@ -16,8 +14,6 @@ namespace Models.Level
         {
             _selfObject = Object.Instantiate(levelInfo.prefab, parent);
             _selfTransform = _selfObject.transform;
-
-            LevelCamera = _selfTransform.Find("LevelCamera").GetComponent<Camera>();
         }
 
         public void Update()
