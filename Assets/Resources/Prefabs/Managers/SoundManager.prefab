@@ -62,19 +62,31 @@ MonoBehaviour:
   backgroundMusicAudioSource: {fileID: 1567378816824003454}
   sounds:
   - Name: ButtonClick
-    Clip: {fileID: 8300000, guid: 81d595db63b2df342bc72cb6fa25b587, type: 3}
+    Clip: {fileID: 8300000, guid: 0a8db79a32d7bbb42a6c99c81f151775, type: 3}
     Type: 1
     Volume: 1
     Pitch: 3
     Source: {fileID: 0}
+  - Name: DamageSound
+    Clip: {fileID: 8300000, guid: 8fa6a9d60c62622418e008f766f874bc, type: 3}
+    Type: 1
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
   - Name: GameEndSound
-    Clip: {fileID: 8300000, guid: c17b4debde54fef46b902f13bb6c4bad, type: 3}
+    Clip: {fileID: 8300000, guid: 010c9ad6815ae9143ba4ab63dfe915f8, type: 3}
+    Type: 1
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Name: DeathSound
+    Clip: {fileID: 8300000, guid: 83bf1e8b8f63d70479b9542a4173f3a1, type: 3}
     Type: 1
     Volume: 1
     Pitch: 1
     Source: {fileID: 0}
   - Name: GameBackground
-    Clip: {fileID: 8300000, guid: fa44134da88abc349abd2f98848703a7, type: 3}
+    Clip: {fileID: 8300000, guid: 994bc0fe4b6bd6e46ab28c715e602d0e, type: 3}
     Type: 0
     Volume: 1
     Pitch: 1

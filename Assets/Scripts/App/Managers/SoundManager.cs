@@ -21,6 +21,8 @@ public class SoundManager : MonoBehaviour, ISoundManager, IService
     [SerializeField]
     private List<Sound> sounds;
 
+    private AudioListener _mainAudioListener;
+
     private Dictionary<Type, string> _pagesBackgroundMusic;
 
     private Sound _currentBackgroundMusic;
@@ -31,7 +33,10 @@ public class SoundManager : MonoBehaviour, ISoundManager, IService
 
     public void Init()
     {
+        var gameplayManager = GameClient.Get<IGameplayManager>();
         _dataManager = GameClient.Get<IDataManager>();
+
+        _mainAudioListener = Camera.main.GetComponent<AudioListener>();
 
         _pagesBackgroundMusic = new Dictionary<Type, string>()
         {
@@ -51,6 +56,9 @@ public class SoundManager : MonoBehaviour, ISoundManager, IService
                     break;
             }
         }
+
+        gameplayManager.GameplayStartedEvent += GameplayStartedEventHandler;
+        gameplayManager.GameplayEndedEvent += GameplayEndedEventHandler;
     }
 
     public void Update()
@@ -182,6 +190,7 @@ public class SoundManager : MonoBehaviour, ISoundManager, IService
         source.clip = sound.Clip;
         source.pitch = sound.Pitch;
         source.loop = sound.Type == SoundType.BackgroundMusic;
+        source.maxDistance = 15;
         source.clip.LoadAudioData();
 
         if (isNeedSetVolume)
@@ -192,9 +201,21 @@ public class SoundManager : MonoBehaviour, ISoundManager, IService
         return source;
     }
 
+    private void GameplayStartedEventHandler()
+    {
+        _mainAudioListener.enabled = false;
+    }
+
+    private void GameplayEndedEventHandler()
+    {
+        _mainAudioListener.enabled = true;
+    }
+
     public static class SoundsNames
     {
         public const string ButtonClick = "ButtonClick";
+        public const string DamageSound = "DamageSound";
+        public const string DeathSound = "DeathSound";
         public const string GameEndSound = "GameEndSound";
 
         public const string GameBackground = "GameBackground";

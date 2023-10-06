@@ -1,5 +1,6 @@
 using Models;
 using TMPro;
+using UI.Pages.Components.HomePage;
 using UnityEngine;
 using UnityEngine.UI;
 using static SoundManager;
@@ -19,7 +20,7 @@ public class HomePage : BasePage
     {
         base.Init();
 
-        _soundManager = GameClient.Instance.GetService<ISoundManager>();
+        _soundManager = GameClient.Get<ISoundManager>();
 
         Transform soundSettingsPanel = SelfTransform.Find("Content/Panel_Settings");
         _soundSettingsButtons = new SoundSettingsButton[]
@@ -43,7 +44,7 @@ public class HomePage : BasePage
 
     private void SetCurrentLevelText()
     {
-        var maxSurvivalTime = GameClient.Instance.GetService<IDataManager>().CachedUserLocalData.maxSurvivalTime;
+        var maxSurvivalTime = GameClient.Get<IDataManager>().CachedUserLocalData.maxSurvivalTime;
 
         _currentMaxSurvivalTimeText.text = $"{maxSurvivalTime.TotalSeconds}s";
     }
@@ -68,6 +69,6 @@ public class HomePage : BasePage
     {
         SoundManager.SetSound(SoundsNames.ButtonClick);
 
-        GameClient.Instance.GetService<IAppStateManager>().ChangeAppState(AppStateManager.AppState.Game);
+        GameClient.Get<IAppStateManager>().ChangeAppState(AppStateManager.AppState.Game);
     }
 }

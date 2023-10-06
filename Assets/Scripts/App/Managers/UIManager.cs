@@ -44,7 +44,7 @@ public class UIManager : IUIManager, IService
 
         UIElementsInit();
 
-        _soundManager = GameClient.Instance.GetService<ISoundManager>();
+        _soundManager = GameClient.Get<ISoundManager>();
     }
 
     public void Update()

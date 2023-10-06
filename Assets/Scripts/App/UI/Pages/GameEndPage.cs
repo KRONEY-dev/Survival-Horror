@@ -1,3 +1,4 @@
+using UI.Pages.Components.GameEndPage;
 using static SoundManager;
 
 public class GameEndPage : BasePage
@@ -12,9 +13,9 @@ public class GameEndPage : BasePage
 
     public override void Init()
     {
-        _gameplayManager = GameClient.Instance.GetService<IGameplayManager>();
-        _appStateManager = GameClient.Instance.GetService<IAppStateManager>();
-        _dataManager = GameClient.Instance.GetService<IDataManager>();
+        _gameplayManager = GameClient.Get<IGameplayManager>();
+        _appStateManager = GameClient.Get<IAppStateManager>();
+        _dataManager = GameClient.Get<IDataManager>();
 
         _gameEndInfoPanel = new GameEndInfoPanel(SelfTransform.Find("Panel_GameEndInfo").gameObject);
 

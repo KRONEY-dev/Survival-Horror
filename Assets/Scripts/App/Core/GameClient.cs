@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameClient : DIBase
@@ -31,11 +30,11 @@ public class GameClient : DIBase
         GameObject soundManagerPrefab = Resources.Load("Prefabs/Managers/SoundManager") as GameObject;
         AddService<ISoundManager>(Object.Instantiate(soundManagerPrefab, ParentForPrefabedManagers).GetComponent<SoundManager>());
 
-        AddService<IInputManager>(new InputManager());
         AddService<IDataManager>(new DataManager());
-        AddService<IUIManager>(new UIManager());
-        AddService<IAppStateManager>(new AppStateManager());
         AddService<IGameplayManager>(new GameplayManager());
+        AddService<IUIManager>(new UIManager());
+        AddService<IInputManager>(new InputManager());
+        AddService<IAppStateManager>(new AppStateManager());
     }
 
     public static T Get<T>()

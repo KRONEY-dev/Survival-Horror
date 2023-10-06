@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class InputManager : IService, IInputManager
 {
@@ -9,7 +11,10 @@ public class InputManager : IService, IInputManager
         Unknown,
 
         Mouse,
+        Joystick
     }
+
+    public bool CanHandleInput { get; set; }
 
     private readonly object _sync = new object();
 
@@ -17,7 +22,7 @@ public class InputManager : IService, IInputManager
 
     private int _customFreeIndex;
 
-    public bool CanHandleInput { get; set; }
+    private Joystick _moveJoystick;
 
     /// <summary>
     ///     Registers the input handler by type and code.
@@ -28,8 +33,9 @@ public class InputManager : IService, IInputManager
     /// <param name="onInputUp">On input up, with position on screen.</param>
     /// <param name="onInputDown">On input down, with position on screen.</param>
     /// <param name="onInput">On input, with position on screen.</param>
+    /// <param name="onInputEndParametrized">On input end, with unique parameter.</param>
     public int RegisterInputHandler(InputType type, int inputCode, Action<Vector3> onInputUp = null, Action<Vector3> onInputDown = null,
-        Action<Vector3> onInput = null)
+        Action<Vector3> onInput = null, Action<object> onInputEndParametrized = null)
     {
         lock (_sync)
         {
@@ -39,6 +45,7 @@ public class InputManager : IService, IInputManager
                 InputCallback = onInput,
                 InputDownCallback = onInputDown,
                 InputUpCallback = onInputUp,
+                InputParametrizedCallback = onInputEndParametrized,
                 Type = type,
                 Index = _customFreeIndex++
             };
@@ -67,6 +74,8 @@ public class InputManager : IService, IInputManager
         CanHandleInput = true;
 
         _inputHandlers = new List<InputEvent>();
+
+        CreateMoveJoystick();
     }
 
     public void Update()
@@ -117,6 +126,38 @@ public class InputManager : IService, IInputManager
                         }
                     }
                     break;
+                case InputType.Joystick:
+                    {
+                        if (_moveJoystick != null && _moveJoystick.IsActive && _moveJoystick.IsUsing)
+                        {
+                            item.InvokeInputParametrizedCallback(new object[] { _moveJoystick.Horizontal, _moveJoystick.Vertical, true });
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void CreateMoveJoystick()
+    {
+        var moveJoystick = Resources.Load<GameObject>("Prefabs/UI/Controlls/Joystick");
+        var parent = GameClient.Get<IUIManager>().GetPage<GamePage>().GetControllsParent();
+        var joystic = Object.Instantiate(moveJoystick, parent);
+        _moveJoystick = new Joystick(joystic);
+
+        _moveJoystick.OnJoysticStopsBeingUsed += OnJoysticStopsBeingUsedHandler;
+    }
+
+    private void OnJoysticStopsBeingUsedHandler()
+    {
+        InputEvent item;
+        for (int i = 0; i < _inputHandlers.Count; i++)
+        {
+            item = _inputHandlers[i];
+
+            if (item.Type == InputType.Joystick)
+            {
+                item.InvokeInputParametrizedCallback(new object[] { _moveJoystick.Horizontal, _moveJoystick.Vertical, false });
             }
         }
     }
@@ -138,6 +179,8 @@ public class InputEvent
 
     public Action<Vector3> InputCallback;
 
+    public Action<object> InputParametrizedCallback;
+
     public void InvokeInputUpCallback(Vector3 positionOnScreen)
     {
         InputUpCallback?.Invoke(positionOnScreen);
@@ -151,5 +194,10 @@ public class InputEvent
     public void InvokeInputCallback(Vector3 positionOnScreen)
     {
         InputCallback?.Invoke(positionOnScreen);
+    }
+
+    public void InvokeInputParametrizedCallback(object param)
+    {
+        InputParametrizedCallback?.Invoke(param);
     }
 }

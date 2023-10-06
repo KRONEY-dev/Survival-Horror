@@ -30,6 +30,7 @@ public class GameplayManager : IGameplayManager, IService
         {
             new LevelController(),
             new HeroController(),
+            new EnemiesController(),
             new CameraController(),
             new MatchController()
         };

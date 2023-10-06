@@ -19,8 +19,8 @@ public abstract class BaseUIElement
 
     protected BaseUIElement()
     {
-        UiManager = GameClient.Instance.GetService<IUIManager>();
-        SoundManager = GameClient.Instance.GetService<ISoundManager>();
+        UiManager = GameClient.Get<IUIManager>();
+        SoundManager = GameClient.Get<ISoundManager>();
 
         var prefab = Resources.Load<GameObject>($"{PrefabRootPath}{PrefabName}");
 

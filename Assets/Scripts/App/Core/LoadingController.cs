@@ -6,7 +6,7 @@ public class LoadingController
 
     public LoadingController()
     {
-        _uiManager = GameClient.Instance.GetService<IUIManager>();
+        _uiManager = GameClient.Get<IUIManager>();
     }
 
     public void StartGame()

@@ -12,6 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85165856c8656b9409754c3931b1d842, type: 3}
   m_Name: GameplayData
   m_EditorClassIdentifier: 
+  mainGameplayConfig:
+    enemiesPerMinute: 10
   levels:
   - number: 1
     prefab: {fileID: 8745482537159269869, guid: c62dd51dad448f040ae020199f789291, type: 3}
+  heroConfig:
+    maxSpeed: 8
+    health: 3
+  heroCameraConfig:
+    distance: 10
+    movementSpeed: 10
+  enemyConfig:
+    speed: 6
+  mineConfig:
+    timeBeforeExplosion: 1.5
+    eplosionRadius: 3
+    heroHealthHit: 2

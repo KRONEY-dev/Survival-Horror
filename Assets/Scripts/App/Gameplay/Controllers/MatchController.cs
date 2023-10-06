@@ -11,10 +11,10 @@ public class MatchController : IController
 
     public void Init()
     {
-        _uiManager = GameClient.Instance.GetService<IUIManager>();
-        _dataManager = GameClient.Instance.GetService<IDataManager>();
+        _uiManager = GameClient.Get<IUIManager>();
+        _dataManager = GameClient.Get<IDataManager>();
 
-        _heroController = GameClient.Instance.GetService<IGameplayManager>().GetController<HeroController>();
+        _heroController = GameClient.Get<IGameplayManager>().GetController<HeroController>();
     }
 
     public void ResetAll()
