@@ -27,6 +27,10 @@ public class GameplayData : ScriptableObject
     public class MainGameplayConfig
     {
         public float enemiesPerMinute;
+
+        public float safeAreaOffsetOnLevelFloor;
+
+        public float matchEndDelayDuration;
     }
 
     [Serializable]
@@ -41,6 +45,8 @@ public class GameplayData : ScriptableObject
     {
         public float maxSpeed;
         public int health;
+
+        public float defenseDurationAfterHit;
     }
 
     [Serializable]
@@ -54,6 +60,8 @@ public class GameplayData : ScriptableObject
     public class EnemyConfig
     {
         public float speed;
+
+        public int heroHealthHit;
     }
 
     [Serializable]

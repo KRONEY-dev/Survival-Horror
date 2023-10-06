@@ -8,6 +8,22 @@ namespace Extentions
 {
     public static class GeneralExtentions
     {
+        public static string GetFormattedTimeString(TimeSpan time)
+        {
+            string timeText;
+            int timeSeconds = time.Seconds;
+            if (time.Minutes != 0)
+            {
+                timeText = $"{time.Minutes}m {timeSeconds}s";
+            }
+            else
+            {
+                timeText = $"{timeSeconds}s";
+            }
+
+            return timeText;
+        }
+
         public static string Encrypt(string value, string key)
         {
             return Convert.ToBase64String(Encrypt(Encoding.UTF8.GetBytes(value), key));

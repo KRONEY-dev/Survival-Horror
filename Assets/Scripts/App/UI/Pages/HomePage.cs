@@ -1,3 +1,4 @@
+using Extentions;
 using Models;
 using TMPro;
 using UI.Pages.Components.HomePage;
@@ -46,7 +47,7 @@ public class HomePage : BasePage
     {
         var maxSurvivalTime = GameClient.Get<IDataManager>().CachedUserLocalData.maxSurvivalTime;
 
-        _currentMaxSurvivalTimeText.text = $"{maxSurvivalTime.TotalSeconds}s";
+        _currentMaxSurvivalTimeText.text = $"{GeneralExtentions.GetFormattedTimeString(maxSurvivalTime)}";
     }
 
     private SoundSettingsButton GetSoundSettingsButtonByType(SoundType type, string pathAtPanel, Transform soundSettingsPanel)

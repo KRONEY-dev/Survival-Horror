@@ -1,20 +1,30 @@
+using Extensions;
 using System;
 
 public class MatchController : IController
 {
     public event Action OnMatchFinishedEvent;
 
+    public bool IsMatchActive;
+
     private IUIManager _uiManager;
     private IDataManager _dataManager;
 
-    private HeroController _heroController;
+    private Timer _matchEndDelayTimer;
+    private float _matchEndDelayDuration;
+
+    private DateTime _matchStartDate;
 
     public void Init()
     {
+        var gameplayManager = GameClient.Get<IGameplayManager>();
         _uiManager = GameClient.Get<IUIManager>();
         _dataManager = GameClient.Get<IDataManager>();
 
-        _heroController = GameClient.Get<IGameplayManager>().GetController<HeroController>();
+        _matchEndDelayTimer = new Timer();
+        _matchEndDelayDuration = gameplayManager.GameplayData.mainGameplayConfig.matchEndDelayDuration;
+
+        gameplayManager.GetController<LevelController>().OnLevelLoadedEvent += OnLevelLoadedEventHandler;
     }
 
     public void ResetAll()
@@ -27,13 +37,16 @@ public class MatchController : IController
 
     public void Update()
     {
+        _matchEndDelayTimer?.Update();
     }
 
     public void SetEndState()
     {
         OnMatchFinishedEvent?.Invoke();
 
-        TimeSpan currentSurvivalTime = TimeSpan.Zero;//Need real data
+        IsMatchActive = false;
+
+        TimeSpan currentSurvivalTime = DateTime.Now - _matchStartDate;
         bool isNewRecord = false;
 
         if (currentSurvivalTime > _dataManager.CachedUserLocalData.maxSurvivalTime)
@@ -42,6 +55,16 @@ public class MatchController : IController
             isNewRecord = true;
         }
 
-        _uiManager.SetPage<GameEndPage>(currentSurvivalTime, isNewRecord);
+        _matchEndDelayTimer.Start(_matchEndDelayDuration, () =>
+        {
+            _uiManager.SetPage<GameEndPage>(new object[] { currentSurvivalTime, isNewRecord });
+        });
+    }
+
+    private void OnLevelLoadedEventHandler()
+    {
+        _matchStartDate = DateTime.Now;
+
+        IsMatchActive = true;
     }
 }

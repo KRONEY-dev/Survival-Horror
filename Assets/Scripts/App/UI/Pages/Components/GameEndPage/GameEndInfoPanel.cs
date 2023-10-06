@@ -1,3 +1,4 @@
+using Extentions;
 using System;
 using TMPro;
 using UnityEngine;
@@ -14,10 +15,13 @@ namespace UI.Pages.Components.GameEndPage
         private Transform _selfTransform;
 
         private TextMeshProUGUI _titleText;
-        private TextMeshProUGUI _ribonLevelText;
+        private TextMeshProUGUI _ribonSurvivalTimeText;
 
         private Button _homeButton;
         private Button _repeatButton;
+
+        private string _defaultTitleText;
+        private string _newRecordTitleText;
 
         public GameEndInfoPanel(GameObject gameObject)
         {
@@ -25,18 +29,23 @@ namespace UI.Pages.Components.GameEndPage
             _selfTransform = _selfObject.transform;
 
             _titleText = _selfTransform.Find("Text_Title").GetComponent<TextMeshProUGUI>();
-            _ribonLevelText = _selfTransform.Find("Panel_RibonCurrentLevel/Text_Main").GetComponent<TextMeshProUGUI>();
+            _ribonSurvivalTimeText = _selfTransform.Find("Panel_RibonSurvivalTime/Text_Main").GetComponent<TextMeshProUGUI>();
 
             _homeButton = _selfTransform.Find("Panel_Navigation/Button_Home").GetComponent<Button>();
             _repeatButton = _selfTransform.Find("Panel_Navigation/Button_Repeat").GetComponent<Button>();
+
+            _defaultTitleText = $"GAME OVER";
+            _newRecordTitleText = "CONGRATULATIONS!<br><color=red>NEW RECORD<color=red>";
 
             _homeButton.onClick.AddListener(HomeButtonOnClickHandler);
             _repeatButton.onClick.AddListener(RepeatButtonOnClickHandler);
         }
 
-        public void SetRibonSurvivalTime(float survivalTime)
+        public void SetRibonSurvivalTime(TimeSpan survivalTime, bool isNewRecord)
         {
-            _ribonLevelText.text = $"COMPLETED LEVEL: <color=red>{survivalTime}</color>";
+            _titleText.text = isNewRecord ? _newRecordTitleText : _defaultTitleText;
+
+            _ribonSurvivalTimeText.text = $"SURVIVAL TIME: <color=red>{GeneralExtentions.GetFormattedTimeString(survivalTime)}</color>";
         }
 
         private void HomeButtonOnClickHandler()

@@ -29,6 +29,7 @@ public class HeroController : IController
         _heroPrefab = Resources.Load<GameObject>("Prefabs/Gameplay/Hero");
 
         _levelController.OnLevelLoadedEvent += OnLevelLoadedEventHandler;
+        _matchController.OnMatchFinishedEvent += OnMatchFinishedEventHandler;
     }
 
     public void ResetAll()
@@ -39,12 +40,14 @@ public class HeroController : IController
 
     public void Dispose()
     {
-        _hero?.Destroy();
         _hero = null;
     }
 
     public void Update()
     {
+        if (!_gameplayManager.IsGameplayStarted || !_matchController.IsMatchActive) return;
+
+        _hero?.Update();
     }
 
     public Transform GetHeroTransform()
@@ -61,8 +64,6 @@ public class HeroController : IController
     {
         _hero.Hit(healthHit);
 
-        OnHeroHitEvent?.Invoke(healthHit);
-
         if (_hero.Health == 0)
         {
             _matchController.SetEndState();
@@ -76,6 +77,18 @@ public class HeroController : IController
 
         _cameraController.SetCameraTarget(heroObject.transform);
 
+        _hero.OnHitEvent += OnHitEventHandler;
+
         OnHeroLoadedEvent?.Invoke();
+    }
+
+    private void OnHitEventHandler(int hit)
+    {
+        OnHeroHitEvent?.Invoke(hit);
+    }
+
+    private void OnMatchFinishedEventHandler()
+    {
+        _hero?.StopInput();
     }
 }

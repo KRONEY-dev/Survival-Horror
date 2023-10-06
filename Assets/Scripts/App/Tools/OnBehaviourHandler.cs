@@ -19,6 +19,8 @@ public class OnBehaviourHandler : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public event Action<Collider> TriggerStaying;
 
+    public event Action<ControllerColliderHit> ControllerColliderHit;
+
     public event Action<GameObject> Destroying;
 
     public event Action<PointerEventData> PointerEntered;
@@ -112,6 +114,11 @@ public class OnBehaviourHandler : MonoBehaviour, IPointerEnterHandler, IPointerE
     private void OnTriggerStay(Collider collider)
     {
         TriggerStaying?.Invoke(collider);
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        ControllerColliderHit?.Invoke(hit);
     }
 
     private void OnDestroy()

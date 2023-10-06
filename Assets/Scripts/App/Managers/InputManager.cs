@@ -97,6 +97,11 @@ public class InputManager : IService, IInputManager
         _inputHandlers.Clear();
     }
 
+    public void ResetJoystic()
+    {
+        _moveJoystick?.Reset();
+    }
+
     private void HandleInput()
     {
         InputEvent item;

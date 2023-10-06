@@ -1,3 +1,4 @@
+using System;
 using UI.Pages.Components.GameEndPage;
 using static SoundManager;
 
@@ -42,10 +43,12 @@ public class GameEndPage : BasePage
     {
         base.Show(data);
 
-        float survivalTime = (float)data;
+        var param = data as object[];
+        var survivalTime = (TimeSpan)param[0];
+        var isNewRecord = (bool)param[1];
 
         SoundManager.SetSound(SoundsNames.GameEndSound);
 
-        _gameEndInfoPanel.SetRibonSurvivalTime(survivalTime);
+        _gameEndInfoPanel.SetRibonSurvivalTime(survivalTime, isNewRecord);
     }
 }

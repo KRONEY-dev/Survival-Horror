@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7140767188108468013}
   - component: {fileID: 2095847985707527322}
   - component: {fileID: 4520212774666694795}
+  - component: {fileID: 6841993464115150642}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -99,6 +100,18 @@ CharacterController:
   m_Radius: 0.5
   m_SlopeLimit: 0
   m_StepOffset: 0
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.1
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6841993464115150642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367265726664466873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe84c61ea4d31b43801eceb2c3d2de0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

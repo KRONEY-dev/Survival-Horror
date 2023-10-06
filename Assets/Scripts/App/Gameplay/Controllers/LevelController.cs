@@ -13,6 +13,7 @@ public class LevelController : IController
 
     private IGameplayManager _gameplayManager;
 
+    private MatchController _matchController;
     private HeroController _heroController;
     private EnemiesController _enemiesController;
 
@@ -21,6 +22,8 @@ public class LevelController : IController
     public void Init()
     {
         _gameplayManager = GameClient.Get<IGameplayManager>();
+
+        _matchController = _gameplayManager.GetController<MatchController>();
         _heroController = _gameplayManager.GetController<HeroController>();
         _enemiesController = _gameplayManager.GetController<EnemiesController>();
 
@@ -39,11 +42,9 @@ public class LevelController : IController
 
     public void Update()
     {
-        if (!_gameplayManager.IsGameplayStarted)
-            return;
+        if (!Initialized) return;
 
-        if (!Initialized)
-            return;
+        if (!_gameplayManager.IsGameplayStarted || !_matchController.IsMatchActive) return;
 
         CurrentLevel?.Update();
     }
@@ -52,6 +53,11 @@ public class LevelController : IController
     {
         CurrentLevel?.Dispose();
         CurrentLevel = null;
+    }
+
+    public Vector3 GetRandomSafePosition()
+    {
+        return CurrentLevel.GetRandomSafePosition();
     }
 
     private void LoadLevel(GameplayData.LevelInfo levelInfo)

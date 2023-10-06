@@ -15,6 +15,7 @@ public class GamePage : BasePage
 
     private IAppStateManager _appStateManager;
     private IGameplayManager _gameplayManager;
+    private IInputManager _inputManager;
 
     private HeroController _heroController;
 
@@ -24,6 +25,7 @@ public class GamePage : BasePage
 
         _appStateManager = GameClient.Get<IAppStateManager>();
         _gameplayManager = GameClient.Get<IGameplayManager>();
+        _inputManager = GameClient.Get<IInputManager>();
 
         _controllersParent = SelfTransform.Find("Controllers");
 
@@ -39,6 +41,13 @@ public class GamePage : BasePage
 
         _homeButton.onClick.AddListener(HomeButtonOnClickHandler);
         _restartButton.onClick.AddListener(RestartButtonOnClickHandler);
+    }
+
+    public override void Hide()
+    {
+        base.Hide();
+
+        _inputManager.ResetJoystic();
     }
 
     public Transform GetControllsParent()

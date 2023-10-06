@@ -140,6 +140,13 @@ namespace Models
             _handleRange = Mathf.Abs(value);
         }
 
+        public void Reset()
+        {
+            _input = Vector2.zero;
+            handle.anchoredPosition = Vector2.zero;
+            _isUsing = false;
+        }
+
         private void OnPointerDown(PointerEventData eventData)
         {
             OnDrag(eventData, null);
@@ -223,9 +230,7 @@ namespace Models
 
         private void OnPointerUp(PointerEventData eventData)
         {
-            _input = Vector2.zero;
-            handle.anchoredPosition = Vector2.zero;
-            _isUsing = false;
+            Reset();
 
             OnJoysticStopsBeingUsed?.Invoke();
         }

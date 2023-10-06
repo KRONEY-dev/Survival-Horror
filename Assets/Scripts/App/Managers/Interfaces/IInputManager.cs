@@ -10,4 +10,6 @@ public interface IInputManager
         Action<Vector3> onInput = null, Action<object> onInputEndParametrized = null);
 
     void UnregisterInputHandler(int index);
+
+    void ResetJoystic();
 }

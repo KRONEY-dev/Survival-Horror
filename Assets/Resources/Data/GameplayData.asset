@@ -14,17 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainGameplayConfig:
     enemiesPerMinute: 10
+    safeAreaOffsetOnLevelFloor: 5
+    matchEndDelayDuration: 1.5
   levels:
   - number: 1
     prefab: {fileID: 8745482537159269869, guid: c62dd51dad448f040ae020199f789291, type: 3}
   heroConfig:
     maxSpeed: 8
     health: 3
+    defenseDurationAfterHit: 2
   heroCameraConfig:
     distance: 10
     movementSpeed: 10
   enemyConfig:
     speed: 6
+    heroHealthHit: 1
   mineConfig:
     timeBeforeExplosion: 1.5
     eplosionRadius: 3

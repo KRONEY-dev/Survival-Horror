@@ -132,7 +132,7 @@ public class UIManager : IUIManager, IService
         canvasGroup.DOFade(fadeIn ? 1f : 0f, FadeAnimationDuration).OnComplete(() =>
         {
             canvasGroup.interactable = true;
-            Object.DestroyImmediate(canvasGroup);
+            Object.Destroy(canvasGroup);
 
             if(!fadeIn)
             {

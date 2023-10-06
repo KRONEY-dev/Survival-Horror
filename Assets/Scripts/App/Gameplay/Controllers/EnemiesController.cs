@@ -7,6 +7,7 @@ public class EnemiesController : IController
 {
     private IGameplayManager _gameplayManager;
 
+    private MatchController _matchController;
     private LevelController _levelController;
     private HeroController _heroController;
 
@@ -28,7 +29,7 @@ public class EnemiesController : IController
     {
         _gameplayManager = GameClient.Get<IGameplayManager>();
 
-        var matchController = _gameplayManager.GetController<MatchController>();
+        _matchController = _gameplayManager.GetController<MatchController>();
         _levelController = _gameplayManager.GetController<LevelController>();
         _heroController = _gameplayManager.GetController<HeroController>();
 
@@ -41,21 +42,30 @@ public class EnemiesController : IController
 
         _enemiesSpawnTimer = new Timer();
 
-        matchController.OnMatchFinishedEvent += OnMatchFinishedEventHandler;
+        _matchController.OnMatchFinishedEvent += OnMatchFinishedEventHandler;
         _levelController.OnLevelLoadedEvent += OnLevelLoadedEventHandler;
         _heroController.OnHeroLoadedEvent += OnHeroLoadedEventHandler;
     }
 
     public void ResetAll()
     {
+        foreach (var enemy in _enemies)
+        {
+            enemy.Destroy();
+        }
+
+        _enemies.Clear();
     }
 
     public void Dispose()
     {
+        _enemies.Clear();
     }
 
     public void Update()
     {
+        if (!_gameplayManager.IsGameplayStarted || !_matchController.IsMatchActive) return;
+
         _enemiesSpawnTimer?.Update();
 
         foreach (Enemy enemy in _enemies)
@@ -89,7 +99,11 @@ public class EnemiesController : IController
 
     private void SpawnEnemy()
     {
-        _enemies.Add(new Enemy(Object.Instantiate(_enemyPrefab, _enemyParentTransform), _enemiesTarget, _enemyConfig));
+        var enemyObject = Object.Instantiate(_enemyPrefab, _levelController.GetRandomSafePosition(), Quaternion.identity, _enemyParentTransform);
+        var enemy = new Enemy(enemyObject, _enemiesTarget, _enemyConfig);
+        enemy.OnHitHeroEvent += OnHitHeroEventHandler;
+
+        _enemies.Add(enemy);
     }
 
     private void OnMatchFinishedEventHandler()
@@ -119,5 +133,10 @@ public class EnemiesController : IController
         {
             SpawnEnemy();
         }
+    }
+
+    private void OnHitHeroEventHandler()
+    {
+        _heroController.HitHero(_enemyConfig.heroHealthHit);
     }
 }
