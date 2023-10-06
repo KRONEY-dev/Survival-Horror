@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameplayData", menuName = "AltaGamesTestTask/GameplayData", order = 1)]
+[CreateAssetMenu(fileName = "GameplayData", menuName = "Survival-Horror/GameplayData", order = 1)]
 public class GameplayData : ScriptableObject
 {
     [SerializeField]

@@ -31,6 +31,8 @@ public class DataManager : IService, IDataManager
 
     public void Init()
     {
+        GameManager.Instance.ApplicationPausedEvent += SaveAllData;
+
         _gameDataPathes = new Dictionary<GameDataType, string>()
         {
             { GameDataType.UserData, $"{BaseDataPath}userData.dat" },

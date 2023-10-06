@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public event Action ApplicationPausedEvent;
+
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -33,11 +36,21 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        _gameClient?.Update();
+        if (Instance == this)
+            _gameClient?.Update();
     }
 
     private void OnDestroy()
     {
-        _gameClient?.Dispose();
+        if (Instance == this)
+            _gameClient?.Dispose();
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            ApplicationPausedEvent?.Invoke();
+        }
     }
 }
