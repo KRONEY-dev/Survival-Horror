@@ -23,8 +23,9 @@ MonoBehaviour:
     maxSpeed: 8
     health: 3
     defenseDurationAfterHit: 2
+    deathAnimationDuration: 1
   heroCameraConfig:
-    distance: 10
+    distance: 15
     movementSpeed: 10
   enemyConfig:
     speed: 6

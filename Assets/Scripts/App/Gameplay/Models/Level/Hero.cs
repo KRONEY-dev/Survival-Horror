@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -23,14 +24,16 @@ namespace Models.Level
 
         private CameraController _cameraController;
 
+        private GameplayData.HeroConfig _mainConfig;
+
         private Defense _defense;
 
         private int _inputMoveIndex;
 
-        private float _maxSpeed;
-
         public Hero(GameObject gameObject, GameplayData.HeroConfig config)
         {
+            _mainConfig = config;
+
             _selfObject = gameObject;
             SelfTransform = _selfObject.transform;
 
@@ -41,8 +44,7 @@ namespace Models.Level
             _mainCharacterController = _selfObject.GetComponent<CharacterController>();
             _mainRenderer = _selfObject.GetComponent<Renderer>();
 
-            Health = config.health;
-            _maxSpeed = config.maxSpeed;
+            Health = _mainConfig.health;
 
             _inputManager = GameClient.Get<IInputManager>();
             _soundManager = GameClient.Get<ISoundManager>();
@@ -83,26 +85,42 @@ namespace Models.Level
             if (Health == 0)
             {
                 _soundManager.SetSound(SoundManager.SoundsNames.DeathSound);
+                DeathAnimation();
                 return;
             }
 
             _defense.TurnOn();
         }
 
-        private void OnInputJoystickHandler(object MoveDirection)
-        {
-            object[] param = (object[])MoveDirection;
-
-            Move((float)param[0], (float)param[1], (bool)param[2]);
-        }
-
-        private void Move(float horizontal, float vertical, bool isChangeForward)
+        private void Move(float horizontal, float vertical)
         {
             Vector3 joysticDirection = new Vector2(horizontal, vertical);
 
             Vector3 moveDirection = _cameraController.GetMovementDirection(joysticDirection);
 
-            _mainCharacterController.SimpleMove(moveDirection * _maxSpeed);
+            _mainCharacterController.SimpleMove(moveDirection * _mainConfig.maxSpeed);
+        }
+
+        private void DeathAnimation()
+        {
+            var animationDuration = _mainConfig.deathAnimationDuration;
+
+            var localScaleY = SelfTransform.localScale.y / 2;
+            var endPosition = SelfTransform.localPosition;
+            endPosition.x += localScaleY;
+            endPosition.y = localScaleY;
+            SelfTransform.DOLocalMove(endPosition, animationDuration);
+
+            var endRotate = SelfTransform.localEulerAngles;
+            endRotate.z = -90;
+            SelfTransform.DORotate(endRotate, animationDuration);
+        }
+
+        private void OnInputJoystickHandler(object MoveDirection)
+        {
+            object[] param = (object[])MoveDirection;
+
+            Move((float)param[0], (float)param[1]);
         }
     }
 }

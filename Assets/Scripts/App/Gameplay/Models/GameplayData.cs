@@ -47,6 +47,7 @@ public class GameplayData : ScriptableObject
         public int health;
 
         public float defenseDurationAfterHit;
+        public float deathAnimationDuration;
     }
 
     [Serializable]
